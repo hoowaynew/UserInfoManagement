@@ -14,24 +14,27 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-@WebServlet("/addUserServlet")
-public class AddUserServlet extends HttpServlet {
+/**
+ * 修改和更新用户信息
+ */
+@WebServlet("/updateUserInfoServlet")
+public class UpdateUserInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 1.设置request编码
+        // 1.设置编码
         request.setCharacterEncoding("utf-8");
-        // 2.获取用户表单提交数据
-        Map<String, String[]> add_map = request.getParameterMap();
-        // 3.封装成用户
-        User user = new User();
+        // 2.获取表单信息
+        Map<String, String[]> updateUserInfoMap = request.getParameterMap();
+//        System.out.println(updateUserInfoMap.get("id")[0]);       // 查看用户ID
+        // 3.调用Service层进行数据修改(根据ID)
         UserService userService = new UserServiceImpl();
+        User user = new User();
         try {
-            BeanUtils.populate(user, add_map);
-            // 4.添加用户数据
-            userService.addUser(user);
+            BeanUtils.populate(user, updateUserInfoMap);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 跳转到查询界面
+        userService.updateUserInfoByID(user);
+        // 4.重定向到查询界面
         response.sendRedirect(request.getContextPath() + "/findUserByPageServlet");
 
     }

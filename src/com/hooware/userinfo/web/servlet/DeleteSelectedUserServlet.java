@@ -1,9 +1,7 @@
 package com.hooware.userinfo.web.servlet;
 
-import com.hooware.userinfo.domain.User;
 import com.hooware.userinfo.service.UserService;
 import com.hooware.userinfo.service.impl.UserServiceImpl;
-import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,29 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
+import java.util.Arrays;
 
-@WebServlet("/addUserServlet")
-public class AddUserServlet extends HttpServlet {
+@WebServlet("/deleteSelectedUserServlet")
+public class DeleteSelectedUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 1.设置request编码
-        request.setCharacterEncoding("utf-8");
-        // 2.获取用户表单提交数据
-        Map<String, String[]> add_map = request.getParameterMap();
-        // 3.封装成用户
-        User user = new User();
-        UserService userService = new UserServiceImpl();
-        try {
-            BeanUtils.populate(user, add_map);
-            // 4.添加用户数据
-            userService.addUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // 1.获取待删除的用户id
+        String[] ids = request.getParameterValues("id");
+//        System.out.println(Arrays.toString(ids));
+        // 2.调用service层进行删除选中操作
+        if (ids != null) {
+            UserService userService = new UserServiceImpl();
+            userService.deleteSelectedUser(ids);
         }
-        // 跳转到查询界面
+        // 3.进行重定向跳转
         response.sendRedirect(request.getContextPath() + "/findUserByPageServlet");
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

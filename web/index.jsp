@@ -19,11 +19,11 @@
 </head>
 <body>
 
-<h3 style="margin: 10px; color: deeppink; font-family: 'Microsoft JhengHei UI Light',serif">欢迎你,${admin.username}!</h3>
+<h3 style="margin: 10px; color: deeppink; font-family: 'Microsoft JhengHei UI Light',serif">欢迎你,${admin.username}!<a href="${pageContext.request.contextPath}/logoutServlet">注销</a></h3>
 
 <div align="center">
   <a
-          href="${pageContext.request.contextPath}/findAllUserServlet" style="text-decoration:none;font-size:33px">查询所有用户信息
+          href="${pageContext.request.contextPath}/findUserByPageServlet" style="text-decoration:none;font-size:33px">查询所有用户信息
   </a>
 </div>
 </body>
